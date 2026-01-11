@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人名片 | AI 学习者</title>
+    <!-- 引入 FontAwesome 图标库 (用于社交媒体图标) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- 全局重置与基础设置 --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
+            /* 淡雅的渐变背景：雾霾蓝到淡紫色的过渡 */
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #4a4a4a;
+        }
+
+        /* --- 导航栏 --- */
+        .navbar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 25px;
+            display: flex;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #4a4a4a;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin: 0 20px;
+            transition: color 0.3s, transform 0.3s;
+            position: relative;
+            display: inline-block;
+        }
+
+        .nav-menu a:hover {
+            color: #1976d2;
+            transform: translateY(-3px);
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #1976d2;
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            transform: scaleX(1);
+        }
+
+        /* --- 卡片容器 --- */
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            width: 100%;
+            max-width: 380px;
+            padding: 40px 30px;
+            border-radius: 24px;
+            /* 柔和的阴影，营造悬浮感 */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+            backdrop-filter: blur(10px); /* 毛玻璃效果 */
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* --- 头像区域 --- */
+        .avatar-container {
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* --- 文本内容 --- */
+        .name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2d3436;
+            margin-bottom: 8px;
+        }
+
+        .profession {
+            display: inline-block;
+            background-color: #e3f2fd;
+            color: #1976d2;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .bio {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #636e72;
+            margin-bottom: 30px;
+        }
+
+        /* --- 社交按钮区域 --- */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* 按钮配色 - 保持低饱和度但有区分 */
+        .btn-wechat { background-color: #07c160; }
+        .btn-github { background-color: #333; }
+        .btn-email  { background-color: #ea4335; }
+
+        .social-btn:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        /* --- 响应式适配 --- */
+        @media (max-width: 480px) {
+            .card {
+                margin: 20px;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-menu">
+            <a href="index.html">首页</a>
+            <a href="review.html">实战复盘</a>
+            <a href="chat.html">AI 问答</a>
+        </div>
+    </nav>
+
+    <div class="card">
+        <div class="avatar-container">
+            <!-- 请替换下方的 src 为你的头像图片链接 -->
+            <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Felix" alt="头像" class="avatar">
+        </div>
+        
+        <h1 class="name">息羽6573</h1>
+        <span class="profession">AI 学习者</span>
+        
+        <p class="bio">
+            正在跟随逍遥老师探索人工智能的无限可能。<br>
+            热爱技术，专注 Prompt Engineering 与大模型应用。<br>
+            日拱一卒，无限进步。
+        </p>
+
+        <div class="social-links">
+            <!-- 微信/联系方式 -->
+            <a href="#" class="social-btn btn-wechat" title="微信">
+                <i class="fab fa-weixin"></i>
+            </a>
+            <!-- GitHub -->
+            <a href="#" class="social-btn btn-github" title="GitHub">
+                <i class="fab fa-github"></i>
+            </a>
+            <!-- 邮箱 -->
+            <a href="mailto:your-email@example.com" class="social-btn btn-email" title="发送邮件">
+                <i class="fas fa-envelope"></i>
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>

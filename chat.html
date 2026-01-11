@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 知识库助手</title>
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --accent: #6366f1;
+            --text-main: #1e293b;
+        }
+
+        body {
+            font-family: 'PingFang SC', sans-serif;
+            background: linear-gradient(135deg, #c3dafe 0%, #ede9fe 50%, #fae8ff 100%);
+            background-attachment: fixed;
+            margin: 0; padding: 20px;
+            height: 100vh; display: flex; flex-direction: column; align-items: center;
+        }
+
+        /* --- 导航栏 (复用 review.html 样式) --- */
+        .navbar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 25px;
+            display: flex;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #4a4a4a;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin: 0 20px;
+            transition: color 0.3s, transform 0.3s;
+            position: relative;
+            display: inline-block;
+        }
+
+        .nav-menu a:hover {
+            color: #1976d2;
+            transform: translateY(-3px);
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #1976d2;
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            transform: scaleX(1);
+        }
+
+        /* 标题动态特效 */
+        h1, p {
+            width: fit-content;
+            transition: all 0.4s ease;
+            cursor: default;
+        }
+
+        h1 { margin-top: 60px; color: #312e81; }
+
+        h1:hover {
+            color: #4f46e5;
+            text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+            transform: scale(1.05);
+        }
+
+        p { color: #475569; }
+
+        p:hover {
+            color: #6366f1;
+            transform: scale(1.05);
+        }
+
+        /* 聊天窗口毛玻璃容器 */
+        .chat-container {
+            width: 100%; max-width: 600px; height: 80vh;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            display: flex; flex-direction: column;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden; margin-top: 20px;
+        }
+
+        /* 对话显示区 */
+        #chat-window {
+            flex: 1; padding: 20px; overflow-y: auto;
+            display: flex; flex-direction: column; gap: 15px;
+        }
+
+        .message { max-width: 80%; padding: 12px 16px; border-radius: 15px; font-size: 0.95rem; }
+        .user-msg { align-self: flex-end; background: var(--accent); color: white; }
+        .ai-msg { align-self: flex-start; background: white; color: var(--text-main); border: 1px solid #e2e8f0; }
+
+        /* 输入区 */
+        .input-area {
+            padding: 20px; background: rgba(255, 255, 255, 0.5);
+            display: flex; gap: 10px; border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        input {
+            flex: 1; padding: 12px; border-radius: 12px;
+            border: 1px solid #cbd5e1; outline: none;
+        }
+
+        button {
+            padding: 10px 20px; background: var(--accent); color: white;
+            border: none; border-radius: 12px; cursor: pointer; font-weight: bold;
+        }
+
+        .back-nav { margin-top: 20px; }
+        .back-nav a { text-decoration: none; color: #4338ca; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-menu">
+            <a href="index.html">首页</a>
+            <a href="review.html">实战复盘</a>
+            <a href="chat.html">AI 问答</a>
+        </div>
+    </nav>
+
+    <h1>AI 实战知识库</h1>
+    <p>提问关于“教学卡片”或“报错解决”的问题</p>
+
+    <div class="chat-container">
+        <div id="chat-window">
+            <div class="message ai-msg">你好！我是你的 AI 学习助手。我存储了你从卡片 1 到卡片 4 的所有实战经验。你可以问我“Gemini 连不上怎么办？”或者“卡片 4 学了什么？”</div>
+        </div>
+        <div class="input-area">
+            <input type="text" id="user-input" placeholder="输入你的问题..." onkeypress="if(event.keyCode==13) sendMessage()">
+            <button onclick="sendMessage()">发送</button>
+        </div>
+    </div>
+
+    <div class="back-nav">
+        <a href="index.html">← 返回首页</a>
+    </div>
+
+    <script>
+        // --- 核心知识库：存入你的“解决问题”经历 ---
+        const knowledgeBase = {
+            "gemini": "关于 Gemini 或 Copilot 登录不上：这是我卡片 4 的第一个挑战。解决方法是：进入 VS Code 设置，配置正确的 HTTP Proxy 代理地址，并确保代理软件处于开启状态。",
+            "报错": "遇到红色报错（如 Pylance 提示缺少模块）：不要慌！我曾遇到缺少 requests 的报错，解决方法是在终端输入 `pip install requests` 即可修复。",
+            "卡片4": "教学卡片 4 的重点是：配置本地 Python 环境、掌握 VS Code 插件、以及学会从 GitHub 下载并运行开源项目。",
+            "github": "在 GitHub 找项目有奇效的逻辑是：搜索关键词 `/ + awesome + 你想查询的东西`。",
+            "复盘": "一个好的复盘应该包含四个维度：任务画像、行动清单、成果展示、以及最核心的难点拆解。"
+        };
+
+        function sendMessage() {
+            const input = document.getElementById('user-input');
+            const window = document.getElementById('chat-window');
+            if (!input.value.trim()) return;
+
+            // 显示用户消息
+            const userDiv = document.createElement('div');
+            userDiv.className = 'message user-msg';
+            userDiv.innerText = input.value;
+            window.appendChild(userDiv);
+
+            const query = input.value.toLowerCase();
+            input.value = '';
+
+            // AI 思考效果并回复
+            setTimeout(() => {
+                const aiDiv = document.createElement('div');
+                aiDiv.className = 'message ai-msg';
+                
+                // 简单的关键词匹配逻辑
+                let response = "这超出了我的知识范围，但我记得你教过我：遇到问题先问 Gemini，或者检查网络代理！";
+                for (let key in knowledgeBase) {
+                    if (query.includes(key)) {
+                        response = knowledgeBase[key];
+                        break;
+                    }
+                }
+                
+                aiDiv.innerText = response;
+                window.appendChild(aiDiv);
+                window.scrollTop = window.scrollHeight; // 滚动到底部
+            }, 600);
+        }
+    </script>
+</body>
+</html>

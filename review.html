@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实战复盘 - 深度成长全记录</title>
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --text-main: #1e293b;
+            /* 四张卡片的专属主题色 */
+            --color-1: #3b82f6; /* 蓝色 */
+            --color-2: #10b981; /* 绿色 */
+            --color-3: #f59e0b; /* 橙色 */
+            --color-4: #6366f1; /* 靛青 */
+        }
+
+        body {
+            font-family: 'PingFang SC', 'Helvetica Neue', sans-serif;
+            /* 还原你最满意的梦幻渐变底色 */
+            background: linear-gradient(135deg, #c3dafe 0%, #ede9fe 50%, #fae8ff 100%);
+            background-attachment: fixed;
+            margin: 0;
+            padding: 60px 20px;
+            color: var(--text-main);
+        }
+
+        .container { max-width: 900px; margin: 0 auto; position: relative; }
+        header { text-align: center; margin-bottom: 70px; }
+        
+        header h1, header p {
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            transition: all 0.4s ease;
+            cursor: default;
+        }
+
+        header h1 { font-size: 2.8rem; color: #312e81; font-weight: 800; margin-bottom: 10px; }
+
+        /* 标题专属特效：光晕 + 微放大，区别于链接 */
+        header h1:hover {
+            color: #4f46e5;
+            text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+            transform: scale(1.05);
+        }
+
+        header p:hover {
+            color: #6366f1;
+            transform: scale(1.05);
+        }
+
+        /* --- 导航栏 (复用 index.html 样式) --- */
+        .navbar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 25px;
+            display: flex;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #4a4a4a;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin: 0 20px;
+            transition: color 0.3s, transform 0.3s;
+            position: relative;
+            display: inline-block;
+        }
+
+        .nav-menu a:hover {
+            color: #1976d2;
+            transform: translateY(-3px);
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #1976d2;
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            transform: scaleX(1);
+        }
+
+        /* --- 时间轴结构 --- */
+        .timeline { position: relative; padding: 20px 0; }
+        .timeline::before {
+            content: '';
+            position: absolute; left: 31px; top: 0; width: 4px; height: 100%;
+            background: rgba(99, 102, 241, 0.15);
+            border-radius: 2px;
+        }
+
+        .timeline-item { position: relative; padding-left: 80px; margin-bottom: 80px; }
+        .timeline-dot {
+            position: absolute; left: 20px; top: 0; width: 26px; height: 26px;
+            border-radius: 50%; background: white; border: 4px solid var(--accent-color);
+            z-index: 10; box-shadow: 0 0 20px var(--accent-color);
+        }
+
+        /* --- 极致毛玻璃卡片 --- */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 32px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .glass-card:hover { transform: translateY(-10px); }
+
+        /* 卡片专属色绑定 */
+        .card-1 { --accent-color: var(--color-1); --accent-light: rgba(59, 130, 246, 0.08); }
+        .card-2 { --accent-color: var(--color-2); --accent-light: rgba(16, 185, 129, 0.08); }
+        .card-3 { --accent-color: var(--color-3); --accent-light: rgba(245, 158, 11, 0.08); }
+        .card-4 { --accent-color: var(--color-4); --accent-light: rgba(99, 102, 241, 0.08); }
+
+        .task-main-title {
+            font-size: 1.8rem; font-weight: 800; color: var(--accent-color);
+            margin: 0 0 30px 0; border-bottom: 2px solid var(--accent-light);
+            padding-bottom: 15px;
+        }
+
+        /* --- 四维复盘模型排版 --- */
+        .dimension-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
+
+        .dim-box {
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 16px; padding: 18px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .dim-box:hover { background: var(--accent-light); }
+
+        .dim-header {
+            display: flex; align-items: center; gap: 10px;
+            margin-bottom: 6px; font-weight: 700; color: var(--accent-color);
+            font-size: 0.9rem; text-transform: uppercase;
+        }
+        .dim-icon {
+            width: 22px; height: 22px; border-radius: 6px;
+            background: var(--accent-color); color: white;
+            display: flex; align-items: center; justify-content: center; font-size: 0.7rem;
+        }
+
+        .dim-content { font-size: 0.95rem; color: #475569; line-height: 1.6; padding-left: 32px; }
+
+        /* --- 成果展示区 --- */
+        .showtime-box {
+            margin-top: 10px; border-radius: 16px; overflow: hidden;
+            background: white; border: 2px solid var(--accent-light);
+            height: 180px; display: flex; align-items: center; justify-content: center;
+        }
+        .showtime-box span { color: #94a3b8; font-size: 0.85rem; }
+
+        .back-nav { text-align: center; margin-top: 60px; }
+        .back-nav a {
+            text-decoration: none; color: #4338ca; font-weight: 700;
+            padding: 14px 32px; background: white; border-radius: 100px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-menu">
+            <a href="index.html">首页</a>
+            <a href="review.html">实战复盘</a>
+            <a href="chat.html">AI 问答</a>
+        </div>
+    </nav>
+
+<div class="container">
+    <header>
+        <h1>AI 进阶之路</h1>
+        <p>探索、复盘与每一次的成长记录</p>
+    </header>
+
+    <div class="timeline">
+        
+        <div class="timeline-item card-1">
+            <div class="timeline-dot"></div>
+            <div class="glass-card">
+                <div class="task-main-title">教学卡片 1：基础环境破冰</div>
+                <div class="dimension-grid">
+                    <div class="dim-box">
+                        <div class="dim-header"><div class="dim-icon">01</div> 任务画像 / Context</div>
+                        <div class="dim-content">周期：1.8 之前 | 目标：完成 AI 学习基础设施搭建。</div>
+                    </div>
+                    <div class="dim-box">
+                        <div class="dim-header"><div class="dim-icon">02</div> 行动清单 / Action</div>
+                        <div class="dim-content">成功配置网络环境，完成 Google 与 GitHub 账号注册。</div>
+                    </div>
+                    <div class="dim-box">
+                        <div class="dim-header"><div class="dim-icon">03</div> 成果展示 / Show Time</div>
+                        <div class="showtime-box"><span>✦ 账号配置截图待填充 ✦</span></div>
+                    </div>
+                    <div class="dim-box">
+                        <div class="dim-header"><div class="dim-icon">04</div> 难点拆解 / Insight</div>
+                        <div class="dim-content">稳定网络是基础。初期节点不稳定，通过更换优质节点解决访问限制。</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item card-2">
+            <div class="timeline-dot"></div>
+            <div class="glass-card">
+                <div class="task-main-title">教学卡片 2：交互艺术初探</div>
+                <div class="dimension-grid">
+                    <div class="dim-box">
+                        <div class="dim-header"><div class="dim-icon">01</div> 任务画像 / Context</div>
+                        <div class="dim-content">目标：掌握 Prompt Engineering 核心逻辑。</div>
+                    </div>
+                    <div class="dim-box">
+                        <div class="dim-header"><div class="dim-icon">02</div> 行动清单 / Action</div>
+                        <div class="dim-content">练习“角色+背景+任务”公式，让 AI 辅助生成测试题。</div>
+                    </div>
+                    <div class="dim-box">
+                        <div class="dim-header"><div class="dim-icon">03</div> 成果展示 / Show Time</div>
+                        <div class="showtime-box"><span>✦ 对话逻辑案例待填充 ✦</span></div>
+                    </div>
+                    <div class="dim-box">
+                        <div class="dim-header"><div class="dim-icon">04</div> 难点拆解 / Insight</div>
+                        <div class="dim-content">提示词越具体，AI 的表现越专业。学会了结构化思维。</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item card-3">
+            <div class="timeline-dot"></div>
+            <div class="glass-card">
+                <div class="task-main-title">教学卡片 3：媒体生成实战</div>
+                <div class="dimension-grid">
+                    <div class="dim-box">
+                        <div class="dim-header"><div class="dim-icon">01</div> 任务画像 / Context</div>
+                        <div class="dim-content">周期：1.7 - 1.8 | 目标：探索文生图与视频。</div>
+                    </div>
+                    <div class="dim-box">
+                        <div class="dim-header"><div class="dim-icon">02</div> 行动清单 / Action</div>
+                        <div class="dim-content">尝试海艺 AI 与 Sora 手机版，计划补全人物一致性作品。</div>
+                    </div>
+                    <div class="dim-box">
+                        <div class="dim-header"><div class="dim-icon">03</div> 成果展示 / Show Time</div>
+                        <div class="showtime-box"><span>✦ AI 艺术作品灵感加载中 ✦</span></div>
+                    </div>
+                    <div class="dim-box">
+                        <div class="dim-header"><div class="dim-icon">04</div> 难点拆解 / Insight</div>
+                        <div class="dim-content">生图中的细节控制是难点，待深入研究 Seed 值与角色固定技术。</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item card-4">
+            <div class="timeline-dot"></div>
+            <div class="glass-card">
+                <div class="task-main-title">教学卡片 4：开发者环境实战</div>
+                <div class="dimension-grid">
+                    <div class="dim-box">
+                        <div class="dim-header"><div class="dim-icon">01</div> 任务画像 / Context</div>
+                        <div class="dim-content">周期：1.8 - 1.16 | 目标：本地 AI 开发环境搭建。</div>
+                    </div>
+                    <div class="dim-box">
+                        <div class="dim-header"><div class="dim-icon">02</div> 行动清单 / Action</div>
+                        <div class="dim-content">安装 VS Code，配置 Python 路径，激活 Gemini 插件。</div>
+                    </div>
+                    <div class="dim-box">
+                        <div class="dim-header"><div class="dim-icon">03</div> 成果展示 / Show Time</div>
+                        <div class="showtime-box"><span>✦ 猜数字程序运行截图待填充 ✦</span></div>
+                    </div>
+                    <div class="dim-box">
+                        <div class="dim-header"><div class="dim-icon">04</div> 难点拆解 / Insight</div>
+                        <div class="dim-content">解决插件登录的网络壁垒；通过 <code>pip</code> 快速修复依赖缺失，深刻感悟报错即成长。</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="back-nav">
+        <a href="index.html">← 返回个人主页</a>
+    </div>
+</div>
+
+</body>
+</html>
