@@ -26,9 +26,10 @@
             left: 0;
             width: 100%;
             box-sizing: border-box;
-            padding: 25px;
+            padding: 20px 50px;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
+            align-items: center;
             z-index: 10;
         }
 
@@ -64,6 +65,18 @@
         .nav-menu a:hover::after {
             transform: scaleX(1);
         }
+
+        /* --- 网站 Logo 样式 --- */
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #312e81;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-logo i { color: #6366f1; font-size: 1.4rem; }
 
         /* 标题动态特效 */
         h1, p {
@@ -132,15 +145,21 @@
 <body>
 
     <nav class="navbar">
+        <!-- 左侧 Logo -->
+        <a href="index.html" class="nav-logo">
+            <i class="fas fa-rocket"></i> 息羽 AI 空间
+        </a>
+        <!-- 右侧 菜单 -->
         <div class="nav-menu">
             <a href="index.html">首页</a>
+            <a href="profile.html">个人名片</a>
             <a href="review.html">实战复盘</a>
             <a href="chat.html">AI 问答</a>
         </div>
     </nav>
 
     <h1>AI 实战知识库</h1>
-    <p>提问关于“教学卡片”或“报错解决”的问题</p>
+    <p>提问关于“教学卡片”的问题</p>
 
     <div class="chat-container">
         <div id="chat-window">

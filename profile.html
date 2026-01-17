@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人名片 | 息羽 AI 空间</title>
+    <!-- 引入 FontAwesome 图标库 (用于社交媒体图标) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- 全局重置与基础设置 --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
+            /* 淡雅的渐变背景：雾霾蓝到淡紫色的过渡 */
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #4a4a4a;
+            padding-top: 100px; /* 为导航栏留出空间 */
+            padding-bottom: 40px;
+        }
+
+        /* --- 导航栏 --- */
+        .navbar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #4a4a4a;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin: 0 20px;
+            transition: color 0.3s, transform 0.3s;
+            position: relative;
+            display: inline-block;
+        }
+
+        .nav-menu a:hover {
+            color: #1976d2;
+            transform: translateY(-3px);
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #1976d2;
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            transform: scaleX(1);
+        }
+
+        /* --- 网站 Logo 样式 --- */
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #2d3436;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-logo i { color: #1976d2; font-size: 1.4rem; }
+
+        /* --- 页面主布局容器 --- */
+        .profile-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 30px;
+            align-items: flex-start; /* 顶部对齐 */
+        }
+
+        /* --- 左侧：个人概览卡片 --- */
+        .profile-sidebar {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px 30px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            backdrop-filter: blur(10px); /* 毛玻璃效果 */
+            position: sticky;
+            top: 100px; /* 滚动时吸顶 */
+        }
+
+        /* --- 头像区域 --- */
+        .avatar-container {
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* --- 文本内容 --- */
+        .name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2d3436;
+            margin-bottom: 8px;
+        }
+
+        .profession {
+            display: inline-block;
+            background-color: #e3f2fd;
+            color: #1976d2;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .bio {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #636e72;
+            margin-bottom: 30px;
+        }
+
+        /* --- 社交按钮区域 --- */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* 按钮配色 - 保持低饱和度但有区分 */
+        .btn-wechat { background-color: #07c160; }
+        .btn-github { background-color: #333; }
+        .btn-email  { background-color: #ea4335; }
+
+        .social-btn:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        /* --- 右侧：详细内容区 --- */
+        .profile-content {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,255,255,0.6);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2d3436;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title i { color: #6366f1; }
+
+        .text-content {
+            line-height: 1.8;
+            color: #555;
+            font-size: 1rem;
+        }
+
+        /* 技能标签样式 */
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-tag {
+            background: white;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #555;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .skill-tag:hover {
+            transform: translateY(-2px);
+            color: #6366f1;
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.15);
+        }
+
+        .skill-tag i { font-size: 1rem; }
+
+        /* --- 响应式适配 --- */
+        @media (max-width: 768px) {
+            .profile-wrapper {
+                flex-direction: column;
+            }
+            .profile-sidebar {
+                width: 100%;
+                position: static; /* 移动端取消吸顶 */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <!-- 左侧 Logo -->
+        <a href="index.html" class="nav-logo">
+            <i class="fas fa-rocket"></i> 息羽 AI 空间
+        </a>
+        <!-- 右侧 菜单 -->
+        <div class="nav-menu">
+            <a href="index.html">首页</a>
+            <a href="profile.html">个人名片</a>
+            <a href="review.html">实战复盘</a>
+            <a href="chat.html">AI 问答</a>
+        </div>
+    </nav>
+
+    <div class="profile-wrapper">
+        <!-- 左侧：个人概览 -->
+        <aside class="profile-sidebar">
+            <div class="avatar-container">
+                <!-- 请替换下方的 src 为你的头像图片链接 -->
+                <img src="me.jpg" alt="头像" class="avatar">
+            </div>
+            
+            <h1 class="name">息羽6573</h1>
+            <span class="profession">AI 学习者 & 探索者</span>
+            
+            <p class="bio">
+                日拱一卒，无限进步。<br>
+                专注 AI 工作流与多模态创作。
+            </p>
+
+            <div class="social-links">
+                <!-- 微信/联系方式 -->
+                <a href="#" class="social-btn btn-wechat" title="微信">
+                    <i class="fab fa-weixin"></i>
+                </a>
+                <!-- GitHub -->
+                <a href="#" class="social-btn btn-github" title="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <!-- 邮箱 -->
+                <a href="mailto:your-email@example.com" class="social-btn btn-email" title="发送邮件">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+        </aside>
+
+        <!-- 右侧：详细内容 -->
+        <main class="profile-content">
+            <!-- 关于我 -->
+            <div class="info-card">
+                <div class="section-title"><i class="fas fa-user-astronaut"></i> 关于我</div>
+                <div class="text-content">
+                    <p>你好！我是一名正在探索人工智能无限可能的学习者。从基础的环境配置到复杂的 AI 工作流搭建，我热衷于记录每一个踩坑与成长的瞬间。</p>
+                    <p style="margin-top: 10px;">我相信技术不只是代码，更是解决问题的杠杆。目前我正在跟随逍遥老师深入学习，致力于将 AI 技术转化为实际的生产力工具。</p>
+                </div>
+            </div>
+
+            <!-- 技能栈 -->
+            <div class="info-card">
+                <div class="section-title"><i class="fas fa-toolbox"></i> 技能与工具</div>
+                <div class="skills-grid">
+                    <div class="skill-tag"><i class="fas fa-wand-magic-sparkles"></i> 提示词工程</div>
+                    <div class="skill-tag"><i class="fas fa-robot"></i> AI Agent</div>
+                    <div class="skill-tag"><i class="fab fa-python"></i> Python 基础</div>
+                    <div class="skill-tag"><i class="fas fa-code"></i> VS Code</div>
+                    <div class="skill-tag"><i class="fab fa-github"></i> GitHub</div>
+                    <div class="skill-tag"><i class="fas fa-video"></i> 剪映 & 视频生成</div>
+                    <div class="skill-tag"><i class="fas fa-brain"></i> Notion 工作流</div>
+                </div>
+            </div>
+
+            <!-- 当前目标 -->
+            <div class="info-card">
+                <div class="section-title"><i class="fas fa-bullseye"></i> 当前目标</div>
+                <div class="text-content">
+                    <ul style="padding-left: 20px;">
+                        <li>深入理解大语言模型（LLM）的底层逻辑。</li>
+                        <li>构建属于自己的自动化 AI 知识库。</li>
+                        <li>探索更多 AI 在多媒体创作中的落地应用。</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>

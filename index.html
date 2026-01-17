@@ -3,38 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>个人名片 | AI 学习者</title>
-    <!-- 引入 FontAwesome 图标库 (用于社交媒体图标) -->
+    <title>首页 | 息羽 AI 空间</title>
+    <!-- 引入 FontAwesome 图标库 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* --- 全局重置与基础设置 --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.6);
+            --text-main: #1e293b;
+            --accent: #6366f1;
         }
 
         body {
-            font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
-            /* 淡雅的渐变背景：雾霾蓝到淡紫色的过渡 */
-            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #4a4a4a;
+            font-family: 'PingFang SC', 'Helvetica Neue', sans-serif;
+            /* 统一使用梦幻渐变背景 */
+            background: linear-gradient(135deg, #c3dafe 0%, #ede9fe 50%, #fae8ff 100%);
+            background-attachment: fixed;
+            margin: 0; padding: 0;
+            min-height: 100vh; display: flex; flex-direction: column;
+            color: var(--text-main);
         }
 
         /* --- 导航栏 --- */
         .navbar {
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
-            padding: 25px;
+            padding: 20px 50px;
             display: flex;
-            justify-content: center;
-            z-index: 10;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
         }
 
         .nav-menu a {
@@ -45,14 +41,9 @@
             margin: 0 20px;
             transition: color 0.3s, transform 0.3s;
             position: relative;
-            display: inline-block;
         }
 
-        .nav-menu a:hover {
-            color: #1976d2;
-            transform: translateY(-3px);
-        }
-
+        .nav-menu a:hover { color: #1976d2; transform: translateY(-3px); }
         .nav-menu a::after {
             content: '';
             position: absolute;
@@ -65,147 +56,131 @@
             transform-origin: center;
             transition: transform 0.3s ease;
         }
+        .nav-menu a:hover::after { transform: scaleX(1); }
 
-        .nav-menu a:hover::after {
-            transform: scaleX(1);
-        }
-
-        /* --- 卡片容器 --- */
-        .card {
-            background: rgba(255, 255, 255, 0.9);
-            width: 100%;
-            max-width: 380px;
-            padding: 40px 30px;
-            border-radius: 24px;
-            /* 柔和的阴影，营造悬浮感 */
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            transition: transform 0.3s ease;
-            backdrop-filter: blur(10px); /* 毛玻璃效果 */
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        /* --- 头像区域 --- */
-        .avatar-container {
-            margin-bottom: 20px;
-        }
-
-        .avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid white;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        /* --- 文本内容 --- */
-        .name {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #2d3436;
-            margin-bottom: 8px;
-        }
-
-        .profession {
-            display: inline-block;
-            background-color: #e3f2fd;
-            color: #1976d2;
-            font-size: 0.85rem;
-            font-weight: 600;
-            padding: 6px 16px;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
-        }
-
-        .bio {
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: #636e72;
-            margin-bottom: 30px;
-        }
-
-        /* --- 社交按钮区域 --- */
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .social-btn {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        /* --- 网站 Logo 样式 --- */
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #312e81;
             text-decoration: none;
-            color: white;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-logo i { color: #6366f1; font-size: 1.4rem; }
+
+        /* --- 主页内容区 --- */
+        .main-content {
+            flex: 1;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            text-align: center;
+            padding: 40px 20px;
         }
 
-        /* 按钮配色 - 保持低饱和度但有区分 */
-        .btn-wechat { background-color: #07c160; }
-        .btn-github { background-color: #333; }
-        .btn-email  { background-color: #ea4335; }
-
-        .social-btn:hover {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        .hero-title {
+            font-size: 3.5rem; font-weight: 800; color: #312e81;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 10px rgba(49, 46, 129, 0.1);
         }
 
-        /* --- 响应式适配 --- */
-        @media (max-width: 480px) {
-            .card {
-                margin: 20px;
-                max-width: 100%;
-            }
+        .hero-subtitle {
+            font-size: 1.2rem; color: #64748b; margin-bottom: 60px;
+            max-width: 600px; line-height: 1.6;
+        }
+
+        /* --- 入口卡片网格 --- */
+        .entry-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            width: 100%; max-width: 1000px;
+        }
+
+        .entry-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 24px;
+            padding: 40px 30px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            display: flex; flex-direction: column; align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .entry-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.15);
+        }
+
+        .card-icon {
+            width: 70px; height: 70px;
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; color: white;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 16px rgba(142, 197, 252, 0.4);
+        }
+
+        .card-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 10px; color: #312e81; }
+        .card-desc { font-size: 0.95rem; color: #64748b; line-height: 1.5; }
+
+        /* 针对不同卡片的图标微调 */
+        .icon-review { background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); box-shadow: 0 8px 16px rgba(253, 160, 133, 0.4); }
+        .icon-chat { background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); box-shadow: 0 8px 16px rgba(143, 211, 244, 0.4); }
+        .icon-profile { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); box-shadow: 0 8px 16px rgba(251, 194, 235, 0.4); }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.5rem; }
+            .navbar { padding: 20px; }
         }
     </style>
 </head>
 <body>
 
     <nav class="navbar">
+        <!-- 左侧 Logo -->
+        <a href="index.html" class="nav-logo">
+            <i class="fas fa-rocket"></i> 息羽 AI 空间
+        </a>
+        <!-- 右侧 菜单 -->
         <div class="nav-menu">
             <a href="index.html">首页</a>
+            <a href="profile.html">个人名片</a>
             <a href="review.html">实战复盘</a>
             <a href="chat.html">AI 问答</a>
         </div>
     </nav>
 
-    <div class="card">
-        <div class="avatar-container">
-            <!-- 请替换下方的 src 为你的头像图片链接 -->
-            <img src="me.jpg" alt="头像" class="avatar">
-        </div>
-        
-        <h1 class="name">息羽6573</h1>
-        <span class="profession">AI 学习者</span>
-        
-        <p class="bio">
-            正在跟随逍遥老师探索人工智能的无限可能。<br>
-            热爱技术，专注提示词工程与工作流。<br>
-            日拱一卒，无限进步。
-        </p>
+    <div class="main-content">
+        <h1 class="hero-title">欢迎来到 息羽 AI 空间</h1>
+        <p class="hero-subtitle">这里记录了我从零开始探索人工智能的每一步。<br>从环境配置到多模态创作，从迷茫到顿悟，与你分享我的实战成长之路。</p>
 
-        <div class="social-links">
-            <!-- 微信/联系方式 -->
-            <a href="#" class="social-btn btn-wechat" title="微信">
-                <i class="fab fa-weixin"></i>
+        <div class="entry-grid">
+            <!-- 卡片3：个人名片 -->
+            <a href="profile.html" class="entry-card">
+                <div class="card-icon icon-profile"><i class="fas fa-id-card"></i></div>
+                <div class="card-title">个人名片</div>
+                <div class="card-desc">关于我、我的技术栈以及联系方式。欢迎同路人交流！</div>
             </a>
-            <!-- GitHub -->
-            <a href="#" class="social-btn btn-github" title="GitHub">
-                <i class="fab fa-github"></i>
+
+            <!-- 卡片1：实战复盘 -->
+            <a href="review.html" class="entry-card">
+                <div class="card-icon icon-review"><i class="fas fa-list-check"></i></div>
+                <div class="card-title">实战复盘</div>
+                <div class="card-desc">深度记录 4 个阶段的学习任务、行动清单与核心复盘心得。</div>
             </a>
-            <!-- 邮箱 -->
-            <a href="mailto:your-email@example.com" class="social-btn btn-email" title="发送邮件">
-                <i class="fas fa-envelope"></i>
+
+            <!-- 卡片2：AI 问答 -->
+            <a href="chat.html" class="entry-card">
+                <div class="card-icon icon-chat"><i class="fas fa-comments"></i></div>
+                <div class="card-title">AI 知识库</div>
+                <div class="card-desc">基于我的实战经验构建的智能问答助手，随时解答你的疑惑。</div>
             </a>
         </div>
     </div>
