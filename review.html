@@ -162,11 +162,67 @@
 
         /* --- 成果展示区 --- */
         .showtime-box {
-            margin-top: 10px; border-radius: 16px; overflow: hidden;
-            background: white; border: 2px solid var(--accent-light);
-            height: 180px; display: flex; align-items: center; justify-content: center;
+            margin-top: 15px; 
+            border-radius: 16px; 
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.8); 
+            border: 2px solid var(--accent-light);
+            /* 改为自适应高度，不再固定 180px，方便放多张图 */
+            min-height: 100px; 
+            padding: 10px;
         }
-        .showtime-box span { color: #94a3b8; font-size: 0.85rem; }
+
+        /* 媒体网格：自动排列图片和视频 */
+        .media-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* 自动分列，最小宽度120px */
+            gap: 10px;
+        }
+
+        .media-item {
+            border-radius: 8px; overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+            /* 修改1：固定高度，保证排版整齐 */
+            height: 160px; 
+            background: #f1f5f9; /* 改回浅色微灰背景，比黑色更清爽 */
+            cursor: pointer; /* 鼠标放上去显示手型，提示可点击 */
+            position: relative;
+        }
+        .media-item:hover { transform: scale(1.03); }
+
+        .media-item img, .media-item video {
+            width: 100%; height: 100%; 
+            /* 改回 cover：强制填满格子，消除黑边，点击即可查看完整大图 */
+            object-fit: cover; 
+            display: block;
+        }
+
+        /* 灯箱（放大查看）样式 */
+        .lightbox {
+            display: none; /* 默认隐藏 */
+            position: fixed; z-index: 9999; left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center; align-items: center;
+            cursor: zoom-out;
+        }
+        .lightbox img {
+            max-width: 90%; max-height: 90%;
+            border-radius: 4px;
+            box-shadow: 0 0 20px rgba(255,255,255,0.1);
+            animation: zoomIn 0.3s ease;
+        }
+        @keyframes zoomIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* 空状态提示文字 */
+        .empty-tip {
+            display: flex; align-items: center; justify-content: center;
+            height: 140px; color: #94a3b8; font-size: 0.85rem;
+        }
 
         .back-nav { text-align: center; margin-top: 60px; }
         .back-nav a {
@@ -205,11 +261,22 @@
                     </div>
                     <div class="dim-box">
                         <div class="dim-header"><div class="dim-icon">02</div> 行动清单 / Action</div>
-                        <div class="dim-content">  1. 电脑端/手机端科学上网成功；2. 注册了谷歌账号，登录了谷歌邮箱，gemini，youtube，X等app；3. 进行了Gemini免费会员领取的多种尝试，未成功，准备在长期失败后通过闲鱼购买“成品号”；。</div>
+                        <div class="dim-content">
+                            - 电脑端/手机端科学上网成功；<br>
+                            - 注册了谷歌账号，登录了谷歌邮箱，gemini，youtube，X等app；<br>
+                            - 对比测试了WinPC端与安卓移动端的注册机制，完整经历了Google账号的“注册-秒封-申诉-找回”全流程；<br>
+                            - 进行了Gemini免费会员领取的多种尝试，未成功，准备在长期失败后通过闲鱼购买“成品号”；
+                        </div>
                     </div>
                     <div class="dim-box">
                         <div class="dim-header"><div class="dim-icon">03</div> 成果展示 / Show Time</div>
-                        <div class="showtime-box"><span>✦ 账号配置截图待填充 ✦</span></div>
+                        <div class="showtime-box">
+                            <div class="media-gallery">
+                                <div class="media-item"><img src="1.jpg" alt="成果截图1"></div>
+                                <div class="media-item"><img src="2.jpg" alt="成果截图2"></div>
+                                <div class="media-item"><img src="3.jpg" alt="成果截图3"></div>
+                            </div>
+                        </div>
                     </div>
                     <div class="dim-box">
                         <div class="dim-header"><div class="dim-icon">04</div> 难点拆解 / Insight</div>
@@ -230,11 +297,24 @@
                     </div>
                     <div class="dim-box">
                         <div class="dim-header"><div class="dim-icon">02</div> 行动清单 / Action</div>
-                        <div class="dim-content">练习“角色+背景+任务”公式，让 AI 辅助生成测试题。</div>
+                        <div class="dim-content">
+                            - 用Google账号注册登录了 GitHub、X (Twitter)、YouTube ；<br>
+                            - 订阅 Andrej Karpathy、DeepLearningAI 等频道；<br>
+                            - 了解了各领域的主流ai工具，深度体验豆包等国产工具；<br>
+                            - 掌握了 提示词工程 的核心公式（角色+任务+约束），并实测了 Markdown（排版）与 JSON（结构化）的输出效果；<br>
+                            - 成功利用 AI 将文字指令转化为 Mermaid 流程图 代码，并在 Notion 中渲染成功；
+                        </div>
                     </div>
                     <div class="dim-box">
                         <div class="dim-header"><div class="dim-icon">03</div> 成果展示 / Show Time</div>
-                        <div class="showtime-box"><span>✦ 对话逻辑案例待填充 ✦</span></div>
+                        <div class="showtime-box">
+                            <div class="media-gallery">
+                                <div class="media-item"><img src="4.jpg" alt="成果截图4"></div>
+                                <div class="media-item"><img src="5.jpg" alt="成果截图5"></div>
+                                <div class="media-item"><img src="6.jpg" alt="成果截图6"></div>
+                                <div class="media-item"><img src="7.jpg" alt="成果截图7"></div>
+                            </div>
+                        </div>
                     </div>
                     <div class="dim-box">
                         <div class="dim-header"><div class="dim-icon">04</div> 难点拆解 / Insight</div>
@@ -255,11 +335,39 @@
                     </div>
                     <div class="dim-box">
                         <div class="dim-header"><div class="dim-icon">02</div> 行动清单 / Action</div>
-                        <div class="dim-content">尝试海艺 AI 与 Sora 手机版，计划补全人物一致性作品。</div>
+                        <div class="dim-content">
+                            - 将女儿的线条涂鸦，利用Gemini/豆包润色为成熟的插画作品；<br>
+                            - 用海艺ai 生成IP“蓝白化工机器人”，并利用“图生图+固定风格提示词”，生成了风格统一的海报；<br>
+                            - 用可灵/海螺首尾帧技术制作了类似苹果广告的产品演示动画；<br>
+                            - 用豆包生成了自己的Q版形象；<br>
+                            - 用剪映克隆了自己的音色，配合AI生成的机器人，制作了短片；
+                        </div>
                     </div>
                     <div class="dim-box">
                         <div class="dim-header"><div class="dim-icon">03</div> 成果展示 / Show Time</div>
-                        <div class="showtime-box"><span>✦ AI 艺术作品灵感加载中 ✦</span></div>
+                        <div class="showtime-box">
+                            <!-- 视频专区：3个视频并排，高度略微增加以突显 -->
+                            <div class="media-gallery" style="margin-bottom: 15px; grid-template-columns: repeat(3, 1fr);">
+                                <div class="media-item" style="height: 180px;"><video src="11.mp4" controls></video></div>
+                                <div class="media-item" style="height: 180px;"><video src="22.mp4" controls></video></div>
+                                <div class="media-item" style="height: 180px;"><video src="33.mp4" controls></video></div>
+                            </div>
+                            <!-- 第一行：8-11 -->
+                            <div class="media-gallery" style="margin-bottom: 10px;">
+                                <div class="media-item"><img src="8.jpg" alt="成果8"></div>
+                                <div class="media-item"><img src="9.jpg" alt="成果9"></div>
+                                <div class="media-item"><img src="10.jpg" alt="成果10"></div>
+                                <div class="media-item"><img src="11.jpg" alt="成果11"></div>
+                            </div>
+                            <!-- 第二行：12-16 -->
+                            <div class="media-gallery">
+                                <div class="media-item"><img src="12.jpg" alt="成果12"></div>
+                                <div class="media-item"><img src="13.jpg" alt="成果13"></div>
+                                <div class="media-item"><img src="14.jpg" alt="成果14"></div>
+                                <div class="media-item"><img src="15.jpg" alt="成果15"></div>
+                                <div class="media-item"><img src="16.jpg" alt="成果16"></div>
+                            </div>
+                        </div>
                     </div>
                     <div class="dim-box">
                         <div class="dim-header"><div class="dim-icon">04</div> 难点拆解 / Insight</div>
@@ -280,11 +388,21 @@
                     </div>
                     <div class="dim-box">
                         <div class="dim-header"><div class="dim-icon">02</div> 行动清单 / Action</div>
-                        <div class="dim-content">安装 VS Code，配置 Python 路径，激活 Gemini 插件。</div>
+                        <div class="dim-content">
+                            - GitHub 入门：完成登录、汉化、搜索、下载项目；<br>
+                            - VSCode 配置与运行：成功安装、切换中文、 Python 环境配置、ai助手配置，并成功运行github入门项目；<br>
+                            - vercel部署：成功将网站部署到vercel（my-ai-website-orpin.vercel.app）
+                        </div>
                     </div>
                     <div class="dim-box">
                         <div class="dim-header"><div class="dim-icon">03</div> 成果展示 / Show Time</div>
-                        <div class="showtime-box"><span>✦ 猜数字程序运行截图待填充 ✦</span></div>
+                        <div class="showtime-box">
+                            <div class="media-gallery">
+                                <div class="media-item"><img src="17.jpg" alt="成果17"></div>
+                                <div class="media-item"><img src="18.jpg" alt="成果18"></div>
+                                <div class="media-item"><img src="19.jpg" alt="成果19"></div>
+                            </div>
+                        </div>
                     </div>
                     <div class="dim-box">
                         <div class="dim-header"><div class="dim-icon">04</div> 难点拆解 / Insight</div>
@@ -300,6 +418,28 @@
         <a href="index.html">← 返回个人主页</a>
     </div>
 </div>
+
+<!-- 灯箱容器 (点击图片后显示在这里) -->
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img" src="">
+</div>
+
+<script>
+    // 获取所有 media-item 下的图片，添加点击事件
+    document.querySelectorAll('.media-item img').forEach(img => {
+        img.onclick = function() {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = this.src; // 把点击图片的源赋给灯箱
+            lightbox.style.display = 'flex'; // 显示灯箱
+        }
+    });
+
+    // 关闭灯箱
+    function closeLightbox() {
+        document.getElementById('lightbox').style.display = 'none';
+    }
+</script>
 
 </body>
 </html>
