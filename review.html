@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>实战复盘 - 深度成长全记录</title>
+    <!-- 引入 FontAwesome 图标库 (用于箭头图标) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --glass-bg: rgba(255, 255, 255, 0.75);
@@ -230,6 +232,34 @@
             padding: 14px 32px; background: white; border-radius: 100px;
             box-shadow: 0 10px 20px rgba(0,0,0,0.05);
         }
+
+        /* --- 折叠内容优化样式 --- */
+        .foldable-wrapper {
+            position: relative;
+        }
+        .foldable-content {
+            max-height: 120px; /* 默认显示高度 */
+            overflow: hidden;
+            transition: max-height 0.5s ease; /* 平滑动画 */
+        }
+        .foldable-content.expanded {
+            max-height: 1500px; /* 展开后的最大高度，足够容纳内容即可 */
+        }
+        .foldable-mask {
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; height: 60px;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.9));
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .foldable-content.expanded + .foldable-mask { opacity: 0; }
+        
+        .toggle-btn {
+            text-align: center; margin-top: 10px; cursor: pointer;
+            color: var(--accent-color); font-weight: 700; font-size: 0.9rem;
+            display: flex; align-items: center; justify-content: center; gap: 5px;
+        }
+        .toggle-btn:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -257,7 +287,7 @@
                 <div class="dimension-grid">
                     <div class="dim-box">
                         <div class="dim-header"><div class="dim-icon">01</div> 任务画像 / Context</div>
-                        <div class="dim-content">周期：12.26-12.28 | 目标：完成 AI 学习基础设施搭建。</div>
+                        <div class="dim-content">周期：12.26-12.28 | 目标：搞定网络、账号及支付等 AI 基建入门。</div>
                     </div>
                     <div class="dim-box">
                         <div class="dim-header"><div class="dim-icon">02</div> 行动清单 / Action</div>
@@ -279,8 +309,31 @@
                         </div>
                     </div>
                     <div class="dim-box">
-                        <div class="dim-header"><div class="dim-icon">04</div> 难点拆解 / Insight</div>
-                        <div class="dim-content">稳定网络是基础。初期节点不稳定，通过更换优质节点解决访问限制。</div>
+                        <div class="dim-header"><div class="dim-icon">04</div> 复盘心得 / Lesson Learned</div>
+                        <div class="dim-content">
+                            <div class="foldable-wrapper">
+                                <div class="foldable-content">
+                                    <strong>我卡在哪一步了？</strong><br>
+                                    - 寻找心仪的机场和节点环节卡顿，测试的3个机场/节点均无法满足需求；<br>
+                                    - 端侧风控差异：PC端遭遇验证墙；移动端虽免验证但因IP环境遭遇“秒封”；<br>
+                                    - 因个人原因暂时无法申请 Visa 卡，该任务暂存；<br>
+                                    - Gemini 免费会员认证严格按攻略操作，仍未能刷出优惠资格；<br>
+                                    - 前期因缺乏前置经验盲目推进，走了弯路且浪费成本。<br><br>
+                                    <strong>你是如何解决你的问题的？</strong><br>
+                                    - 科学上网：参考群内经验更换优质机场，实现稳定访问；<br>
+                                    - 账号“秒封”：通过官方申诉渠道成功找回；<br>
+                                    - Gemini 认证：排查操作要求，关注群内经验继续尝试；<br>
+                                    - 策略调整：吸取教训，转为“先观察总结、后针对性实操”的节奏。<br><br>
+                                    <strong>这次教学卡片你的收获是什么？</strong><br>
+                                    - 实操层面：掌握科学上网及筛选优质节点的方法，掌握Gemini认证步骤；<br>
+                                    - 认知层面：深刻体会“环境”优于“技术”，反证了**“系统化教程”与“优质信息源”**的价值；<br>
+                                    - 策略层面：坚定适合自己的学习节奏，既能少走弯路也能培养好习惯；<br>
+                                    - 待推进方向：关注申诉结果、收集机场推荐、规划Visa卡及跟进Gemini认证。
+                                </div>
+                                <div class="foldable-mask"></div>
+                            </div>
+                            <div class="toggle-btn" onclick="toggleFold(this)">展开更多 / Read More <i class="fas fa-chevron-down"></i></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -293,7 +346,7 @@
                 <div class="dimension-grid">
                     <div class="dim-box">
                         <div class="dim-header"><div class="dim-icon">01</div> 任务画像 / Context</div>
-                        <div class="dim-content">目标：掌握 Prompt Engineering 核心逻辑。</div>
+                        <div class="dim-content">周期：12.29-1.2 | 目标：掌握工具矩阵、提示词及结构化逻辑。</div>
                     </div>
                     <div class="dim-box">
                         <div class="dim-header"><div class="dim-icon">02</div> 行动清单 / Action</div>
@@ -317,8 +370,30 @@
                         </div>
                     </div>
                     <div class="dim-box">
-                        <div class="dim-header"><div class="dim-icon">04</div> 难点拆解 / Insight</div>
-                        <div class="dim-content">提示词越具体，AI 的表现越专业。学会了结构化思维。</div>
+                        <div class="dim-header"><div class="dim-icon">04</div> 复盘心得 / Lesson Learned</div>
+                        <div class="dim-content">
+                            <div class="foldable-wrapper">
+                                <div class="foldable-content">
+                                    <strong>我卡在哪一步了？</strong><br>
+                                    - YouTube 网页端登录验证： YouTube 网页端用新注册谷歌账号登录时遇到验证问题，暂未完全解决；<br>
+                                    - 豆包局限性：豆包无法总结部分平台链接内容（B 站、小红书、非公开抖音视频），仅能通过录音记录文字稿总结，操作繁琐且效果有限；<br>
+                                    - Notion 渲染报错：在尝试用 AI 生成复杂流程图时，遇到了 Mermaid 语法对特殊字符（如圆括号、HTML标签）不兼容的问题，导致渲染失败。<br>
+                                    - Notion高级功能：虽然掌握了基本功能，但还没有完全熟悉其深度应用，未来需要进一步探索Notion的自动化和数据库功能。<br><br>
+                                    <strong>你是如何解决你的问题的？</strong><br>
+                                    - 豆包工具使用问题：发现链接总结功能的局限性后，尝试用豆包 “录音记录 + 文字稿总结” 功能替代，虽操作繁琐，但能满足基础视频内容总结需求；同时明确了豆包支持的有效链接类型（公开抖音视频）；<br>
+                                    - Notion渲染问题：通过观察报错信息，让AI进行二次修改后成功渲染。<br>
+                                    - Notion更多功能问题：我将逐步积累使用经验，未来会继续学习如何通过数据库和自动化功能提升Notion的工作流管理能力。<br><br>
+                                    <strong>这次教学卡片你的收获是什么？</strong><br>
+                                    - 工具层面：系统梳理了 AI 各领域主流工具，完成工具注册与初步试用，明确了不同工具的适用场景；<br>
+                                    - 技能层面：掌握了提示词工程核心原则；了解了 Markdown/JSON 格式的本质、用途及区别；<br>
+                                    - 效率的降维打击：亲身体验了“对话 -&gt; 代码 -&gt; 图表”的工作流，相比传统手工绘图，效率提升。<br>
+                                    - 提示词心法：在需求模糊时，不急着下指令，而是先赋予 AI “需求分析师”的角色，让它引导我明确方向。<br>
+                                    - 身份的数字化：明白了在 AI 时代，明确的角色定位（Role）是获取高质量答案的钥匙。
+                                </div>
+                                <div class="foldable-mask"></div>
+                            </div>
+                            <div class="toggle-btn" onclick="toggleFold(this)">展开更多 / Read More <i class="fas fa-chevron-down"></i></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -331,7 +406,7 @@
                 <div class="dimension-grid">
                     <div class="dim-box">
                         <div class="dim-header"><div class="dim-icon">01</div> 任务画像 / Context</div>
-                        <div class="dim-content">周期：1.7 - 1.8 | 目标：探索文生图与视频。</div>
+                        <div class="dim-content">周期：1.3 - 1.7 | 目标：进阶实操图、视、音等多模态创作。</div>
                     </div>
                     <div class="dim-box">
                         <div class="dim-header"><div class="dim-icon">02</div> 行动清单 / Action</div>
@@ -370,8 +445,25 @@
                         </div>
                     </div>
                     <div class="dim-box">
-                        <div class="dim-header"><div class="dim-icon">04</div> 难点拆解 / Insight</div>
-                        <div class="dim-content">生图中的细节控制是难点，待深入研究 Seed 值与角色固定技术。</div>
+                        <div class="dim-header"><div class="dim-icon">04</div> 复盘心得 / Lesson Learned</div>
+                        <div class="dim-content">
+                            <div class="foldable-wrapper">
+                                <div class="foldable-content">
+                                    <strong>我卡在哪一步了？</strong><br>
+                                    - 文生图和视频时，很难达到自己想要的效果。目前的解决方案只能是笨办法（不断换提示词、换工具试错）。深刻体会到提示词工程对行业经验要求极高，不是随便写写就能成的。<br><br>
+                                    <strong>你是如何解决你的问题的？</strong><br>
+                                    - 人机协作：利用豆包共享屏幕功能，让AI充当“手把手教我的老师”，实时解决剪映操作问题。这比自己搜教程快得多。<br>
+                                    - 化整为零：视频生成放弃“一镜到底”，采用分段生成 + 后期剪辑策略，用剪辑软件的确定性去弥补AI生成的不确定性。<br>
+                                    - 结构化喂料：在图生图时，不直接给参考图，而是先让AI“读图”并输出 JSON 配置单，把“感性的参考图”变成了“理性的数据参数”再喂给AI，成功率显著提升。<br><br>
+                                    <strong>这次教学卡片你的收获是什么？</strong><br>
+                                    - 提示词是门槛：AIGC不是零门槛的，它对使用者的“行业认知”和“语言精确度”要求极高。<br>
+                                    - 流程优于工具：无论是“JSON提取”还是“分段生成”，本质上都是在优化工作流 (Workflow)。工具不够完美时，好的流程可以弥补缺陷。<br>
+                                    - MVP思维：完成比完美重要。一个跑通的粗糙视频，价值远高于一个永远停留在构想中的完美电影。
+                                </div>
+                                <div class="foldable-mask"></div>
+                            </div>
+                            <div class="toggle-btn" onclick="toggleFold(this)">展开更多 / Read More <i class="fas fa-chevron-down"></i></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -384,7 +476,7 @@
                 <div class="dimension-grid">
                     <div class="dim-box">
                         <div class="dim-header"><div class="dim-icon">01</div> 任务画像 / Context</div>
-                        <div class="dim-content">周期：1.8 - 1.16 | 目标：本地 AI 开发环境搭建。</div>
+                        <div class="dim-content">周期：1.8 - 1.16 | 目标：配置编程环境并部署个人网站。</div>
                     </div>
                     <div class="dim-box">
                         <div class="dim-header"><div class="dim-icon">02</div> 行动清单 / Action</div>
@@ -405,8 +497,25 @@
                         </div>
                     </div>
                     <div class="dim-box">
-                        <div class="dim-header"><div class="dim-icon">04</div> 难点拆解 / Insight</div>
-                        <div class="dim-content">解决插件登录的网络壁垒；通过 <code>pip</code> 快速修复依赖缺失，深刻感悟报错即成长。</div>
+                        <div class="dim-header"><div class="dim-icon">04</div> 复盘心得 / Lesson Learned</div>
+                        <div class="dim-content">
+                            <div class="foldable-wrapper">
+                                <div class="foldable-content">
+                                    <strong>我卡在哪一步了？</strong><br>
+                                    - Github验证：GitHub 注册时“Visual Puzzle”（视觉拼图）连续两次尝试均失败；<br>
+                                    - 插件不可用：GitHub汉化插件安装后无法运行；<br>
+                                    - gemini code assist在vs code无法登录<br><br>
+                                    <strong>你是如何解决你的问题的？</strong><br>
+                                    - Github验证问题：切换验证方式，用“Audio Puzzle”（语音验证）。事实证明，当一种 AI 验证方式过于死板时，尝试多模态验证（听觉）是高效的备选方案；<br>
+                                    - 浏览器插件问题：浏览器底层机制问题，汉化插件失效是因为浏览器“无痕模式”自动拦截了所有扩展插件，切换回“正常模式”后插件生效；<br>
+                                    - gemini code assist无法登录问题：更改vs code代理配置<br><br>
+                                    <strong>这次教学卡片你的收获是什么？</strong><br>
+                                    - 工具环境的一致性：意识到开发环境的稳定性，很多时候“工具坏了”其实是“系统设置不兼容”，保持正常浏览环境是配置开发工具的前提。
+                                </div>
+                                <div class="foldable-mask"></div>
+                            </div>
+                            <div class="toggle-btn" onclick="toggleFold(this)">展开更多 / Read More <i class="fas fa-chevron-down"></i></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -425,6 +534,20 @@
 </div>
 
 <script>
+    // 折叠/展开功能逻辑
+    function toggleFold(btn) {
+        const wrapper = btn.previousElementSibling; // 获取上方的 wrapper
+        const content = wrapper.querySelector('.foldable-content');
+        
+        if (content.classList.contains('expanded')) {
+            content.classList.remove('expanded');
+            btn.innerHTML = '展开更多 / Read More <i class="fas fa-chevron-down"></i>';
+        } else {
+            content.classList.add('expanded');
+            btn.innerHTML = '收起内容 / Collapse <i class="fas fa-chevron-up"></i>';
+        }
+    }
+
     // 获取所有 media-item 下的图片，添加点击事件
     document.querySelectorAll('.media-item img').forEach(img => {
         img.onclick = function() {
